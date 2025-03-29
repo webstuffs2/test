@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sleep Calculator</title>
+    <title>Caffeine Overdose Calculator</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         nav { background: #333; padding: 10px; }
@@ -18,41 +18,50 @@
         <a href="index.html">Home</a>
         <a href="bmi_calculator.html">BMI Calculator</a>
         <a href="sleep_calculator.html">Sleep Calculator</a>
+        <a href="caffeine_calculator.html">Caffeine Calculator</a>
     </nav>
     
     <div class="container">
-        <h1>Sleep Calculator</h1>
-        <p>Want to wake up feeling refreshed? Use this sleep calculator to determine the best time to go to bed or wake up.</p>
-        <p>The human body follows a natural sleep cycle of about 90 minutes. Waking up in between these cycles can leave you groggy, while waking at the end of a cycle makes you feel more rested.</p>
+        <h1>Caffeine Overdose Calculator</h1>
+        <p>Are you drinking too much caffeine? This calculator estimates how many caffeinated drinks would be dangerous for your body weight.</p>
         
-        <label for="sleepTime">Select when you want to wake up:</label>
-        <input type="time" id="sleepTime">
-        <button onclick="calculateSleepTimes()">Calculate</button>
+        <label for="weight">Enter your weight (kg):</label>
+        <input type="number" id="weight" placeholder="Weight in kg">
         
-        <h2>Suggested Sleep Times:</h2>
-        <p id="result"></p>
+        <label for="drink">Select your caffeinated drink:</label>
+        <select id="drink">
+            <option value="95">Coffee (95mg per cup)</option>
+            <option value="40">Cola (40mg per can)</option>
+            <option value="160">Energy Drink (160mg per can)</option>
+            <option value="63">Tea (63mg per cup)</option>
+        </select>
+        
+        <button onclick="calculateCaffeine()">Calculate</button>
+        
+        <h2 id="result"></h2>
+        
+        <h3>Understanding Caffeine Limits</h3>
+        <p>The FDA suggests a daily limit of 400mg of caffeine for healthy adults. Consuming more can cause side effects like insomnia, nervousness, and rapid heart rate. A lethal dose is estimated at around 150mg per kg of body weight.</p>
+        
+        <h3>How to Reduce Caffeine Intake</h3>
+        <ul>
+            <li>Gradually switch to decaf alternatives.</li>
+            <li>Drink more water to stay hydrated.</li>
+            <li>Monitor caffeine sources, including chocolate and medication.</li>
+        </ul>
     </div>
     
     <script>
-        function calculateSleepTimes() {
-            let wakeTime = document.getElementById("sleepTime").value;
-            if (!wakeTime) {
-                document.getElementById("result").innerText = "Please select a wake-up time.";
+        function calculateCaffeine() {
+            let weight = document.getElementById("weight").value;
+            let caffeinePerDrink = document.getElementById("drink").value;
+            if (weight <= 0) {
+                document.getElementById("result").innerText = "Please enter a valid weight.";
                 return;
             }
-            let sleepCycles = [9, 7.5, 6, 4.5]; // Hours before wake-up time
-            let resultText = "To wake up feeling refreshed, try going to bed at one of these times: \n";
-            let [hours, minutes] = wakeTime.split(":").map(Number);
-            
-            sleepCycles.forEach(cycle => {
-                let sleepTime = new Date();
-                sleepTime.setHours(hours);
-                sleepTime.setMinutes(minutes);
-                sleepTime.setMinutes(sleepTime.getMinutes() - cycle * 60);
-                let formattedTime = sleepTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                resultText += "\n - " + formattedTime;
-            });
-            document.getElementById("result").innerText = resultText;
+            let lethalDose = weight * 150; // Lethal dose in mg
+            let maxDrinks = Math.floor(lethalDose / caffeinePerDrink);
+            document.getElementById("result").innerText = `Consuming around ${maxDrinks} of these drinks could be lethal.`;
         }
     </script>
 </body>
