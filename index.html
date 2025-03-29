@@ -3,120 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Clone</title>
+    <title>BMI Calculator</title>
     <style>
-        body { text-align: center; background: #70c5ce; margin: 0; font-family: Arial, sans-serif; }
-        canvas { background: url('background.png') no-repeat center center / cover; display: block; margin: auto; }
-        #score { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 24px; font-weight: bold; color: white; }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        nav { background: #333; padding: 10px; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+        .container { margin-top: 20px; }
+        input { padding: 8px; margin: 5px; }
+        button { padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div id="score">Score: 0</div>
-    <canvas id="gameCanvas" width="320" height="480"></canvas>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="bmi_calculator.html">BMI Calculator</a>
+        <a href="sleep_calculator.html">Sleep Calculator</a>
+    </nav>
+    
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <p>Enter your weight (kg) and height (m) to calculate your BMI.</p>
+        <input type="number" id="weight" placeholder="Weight (kg)">
+        <input type="number" id="height" placeholder="Height (m)">
+        <button onclick="calculateBMI()">Calculate</button>
+        <h2 id="result"></h2>
+    </div>
+    
     <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-        let bird = { x: 50, y: 150, width: 20, height: 20, gravity: 0.6, lift: -10, velocity: 0 };
-        let pipes = [];
-        let frame = 0;
-        let gameOver = false;
-        let score = 0;
-        let bestScore = localStorage.getItem("bestScore") || 0;
-        const scoreDisplay = document.getElementById("score");
-        const jumpSound = new Audio('jump.mp3');
-        const hitSound = new Audio('hit.mp3');
-
-        function drawBird() {
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
-        }
-
-        function drawPipes() {
-            ctx.fillStyle = "green";
-            pipes.forEach(pipe => {
-                ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
-                ctx.fillRect(pipe.x, pipe.bottom, pipe.width, canvas.height - pipe.bottom);
-            });
-        }
-
-        function update() {
-            if (gameOver) return;
-
-            bird.velocity += bird.gravity;
-            bird.y += bird.velocity;
-
-            if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
-                endGame();
-            }
-
-            if (frame % 90 === 0) {
-                let gap = 100;
-                let topHeight = Math.random() * (canvas.height / 2);
-                pipes.push({ x: canvas.width, width: 40, top: topHeight, bottom: topHeight + gap, passed: false });
-            }
-
-            pipes.forEach(pipe => {
-                pipe.x -= 2;
-                if (pipe.x + pipe.width < 0) pipes.shift();
-                if (
-                    bird.x < pipe.x + pipe.width &&
-                    bird.x + bird.width > pipe.x &&
-                    (bird.y < pipe.top || bird.y + bird.height > pipe.bottom)
-                ) {
-                    endGame();
-                }
-                if (!pipe.passed && pipe.x + pipe.width < bird.x) {
-                    score++;
-                    pipe.passed = true;
-                }
-            });
-
-            scoreDisplay.innerText = `Score: ${score} | Best: ${bestScore}`;
-            frame++;
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBird();
-            drawPipes();
-            if (gameOver) {
-                ctx.fillStyle = "red";
-                ctx.font = "20px Arial";
-                ctx.fillText("Game Over! Click to restart", 50, 240);
+        function calculateBMI() {
+            let weight = document.getElementById("weight").value;
+            let height = document.getElementById("height").value;
+            if(weight > 0 && height > 0){
+                let bmi = (weight / (height * height)).toFixed(2);
+                document.getElementById("result").innerText = "Your BMI is " + bmi;
+            } else {
+                document.getElementById("result").innerText = "Please enter valid values";
             }
         }
-
-        function endGame() {
-            gameOver = true;
-            hitSound.play();
-            if (score > bestScore) {
-                bestScore = score;
-                localStorage.setItem("bestScore", bestScore);
-            }
-        }
-
-        function resetGame() {
-            bird.y = 150;
-            bird.velocity = 0;
-            pipes = [];
-            score = 0;
-            gameOver = false;
-            frame = 0;
-            gameLoop();
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-            if (!gameOver) requestAnimationFrame(gameLoop);
-        }
-
-        window.addEventListener("keydown", () => { bird.velocity = bird.lift; jumpSound.play(); });
-        window.addEventListener("click", () => { bird.velocity = bird.lift; jumpSound.play(); });
-        window.addEventListener("keydown", (e) => { if (gameOver && e.key === "r") resetGame(); });
-        window.addEventListener("click", () => { if (gameOver) resetGame(); });
-
-        gameLoop();
     </script>
 </body>
 </html>
