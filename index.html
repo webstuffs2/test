@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Calculator</title>
+    <title>Sleep Calculator</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         nav { background: #333; padding: 10px; }
         nav a { color: white; margin: 0 15px; text-decoration: none; }
         .container { margin-top: 20px; }
-        input { padding: 8px; margin: 5px; }
+        input, select { padding: 8px; margin: 5px; }
         button { padding: 10px; cursor: pointer; }
     </style>
 </head>
@@ -21,24 +21,38 @@
     </nav>
     
     <div class="container">
-        <h1>BMI Calculator</h1>
-        <p>Enter your weight (kg) and height (m) to calculate your BMI.</p>
-        <input type="number" id="weight" placeholder="Weight (kg)">
-        <input type="number" id="height" placeholder="Height (m)">
-        <button onclick="calculateBMI()">Calculate</button>
-        <h2 id="result"></h2>
+        <h1>Sleep Calculator</h1>
+        <p>Want to wake up feeling refreshed? Use this sleep calculator to determine the best time to go to bed or wake up.</p>
+        <p>The human body follows a natural sleep cycle of about 90 minutes. Waking up in between these cycles can leave you groggy, while waking at the end of a cycle makes you feel more rested.</p>
+        
+        <label for="sleepTime">Select when you want to wake up:</label>
+        <input type="time" id="sleepTime">
+        <button onclick="calculateSleepTimes()">Calculate</button>
+        
+        <h2>Suggested Sleep Times:</h2>
+        <p id="result"></p>
     </div>
     
     <script>
-        function calculateBMI() {
-            let weight = document.getElementById("weight").value;
-            let height = document.getElementById("height").value;
-            if(weight > 0 && height > 0){
-                let bmi = (weight / (height * height)).toFixed(2);
-                document.getElementById("result").innerText = "Your BMI is " + bmi;
-            } else {
-                document.getElementById("result").innerText = "Please enter valid values";
+        function calculateSleepTimes() {
+            let wakeTime = document.getElementById("sleepTime").value;
+            if (!wakeTime) {
+                document.getElementById("result").innerText = "Please select a wake-up time.";
+                return;
             }
+            let sleepCycles = [9, 7.5, 6, 4.5]; // Hours before wake-up time
+            let resultText = "To wake up feeling refreshed, try going to bed at one of these times: \n";
+            let [hours, minutes] = wakeTime.split(":").map(Number);
+            
+            sleepCycles.forEach(cycle => {
+                let sleepTime = new Date();
+                sleepTime.setHours(hours);
+                sleepTime.setMinutes(minutes);
+                sleepTime.setMinutes(sleepTime.getMinutes() - cycle * 60);
+                let formattedTime = sleepTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                resultText += "\n - " + formattedTime;
+            });
+            document.getElementById("result").innerText = resultText;
         }
     </script>
 </body>
