@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caffeine Overdose Calculator</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        nav { background: #333; padding: 10px; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; }
-        .container { margin-top: 20px; }
-        input, select { padding: 8px; margin: 5px; }
-        button { padding: 10px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; color: #333; }
+        nav { background: #222; padding: 15px; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        input, select { padding: 10px; margin: 10px; width: 90%; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 12px 20px; cursor: pointer; background: #007BFF; color: white; border: none; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        h1 { color: #007BFF; }
+        h2, h3 { color: #444; }
+        ul { text-align: left; display: inline-block; }
+        .image-container { margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -23,8 +28,13 @@
     
     <div class="container">
         <h1>Caffeine Overdose Calculator</h1>
-        <p>Are you drinking too much caffeine? This calculator estimates how many caffeinated drinks would be dangerous for your body weight.</p>
+        <p>Are you drinking too much caffeine? This calculator estimates how many caffeinated drinks could be harmful based on your body weight.</p>
         
+        <div class="image-container">
+            <img src="caffeine-chart.png" alt="Caffeine Content Chart" width="100%">
+        </div>
+        
+        <h2>Calculate Your Caffeine Limit</h2>
         <label for="weight">Enter your weight (kg):</label>
         <input type="number" id="weight" placeholder="Weight in kg">
         
@@ -40,14 +50,22 @@
         
         <h2 id="result"></h2>
         
-        <h3>Understanding Caffeine Limits</h3>
-        <p>The FDA suggests a daily limit of 400mg of caffeine for healthy adults. Consuming more can cause side effects like insomnia, nervousness, and rapid heart rate. A lethal dose is estimated at around 150mg per kg of body weight.</p>
-        
-        <h3>How to Reduce Caffeine Intake</h3>
+        <h2>Understanding Caffeine Consumption</h2>
+        <p>The FDA recommends a maximum of 400mg of caffeine per day for healthy adults. Excessive caffeine can lead to negative effects such as:</p>
         <ul>
-            <li>Gradually switch to decaf alternatives.</li>
-            <li>Drink more water to stay hydrated.</li>
-            <li>Monitor caffeine sources, including chocolate and medication.</li>
+            <li>Increased heart rate and blood pressure</li>
+            <li>Insomnia and restlessness</li>
+            <li>Digestive issues</li>
+            <li>Dependency and withdrawal symptoms</li>
+        </ul>
+        
+        <h2>How to Reduce Caffeine Intake</h2>
+        <p>If you're consuming too much caffeine, consider these strategies:</p>
+        <ul>
+            <li>Gradually switch to decaf beverages</li>
+            <li>Replace energy drinks with natural alternatives like herbal tea</li>
+            <li>Drink more water to stay hydrated</li>
+            <li>Monitor hidden sources of caffeine, including chocolate and some medications</li>
         </ul>
     </div>
     
