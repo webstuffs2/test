@@ -1,86 +1,105 @@
+<!-- index.html (simplified for modular link detection) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caffeine Overdose Calculator</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; color: #333; }
-        nav { background: #222; padding: 15px; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); border-radius: 8px; }
-        input, select { padding: 10px; margin: 10px; width: 90%; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 12px 20px; cursor: pointer; background: #007BFF; color: white; border: none; border-radius: 5px; font-size: 16px; }
-        button:hover { background: #0056b3; }
-        h1 { color: #007BFF; }
-        h2, h3 { color: #444; }
-        ul { text-align: left; display: inline-block; }
-        .image-container { margin: 20px 0; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Identify songs from TikTok videos instantly with TTMusicID. Paste the link, and we'll find the music." />
+  <meta name="keywords" content="TikTok song finder, identify music, find TikTok music, TT music ID" />
+  <meta name="author" content="TTMusicID">
+  <meta property="og:title" content="TTMusicID - Find Any TikTok Song" />
+  <meta property="og:description" content="Paste a TikTok video link and discover the music instantly." />
+  <meta property="og:image" content="preview.png" />
+  <meta property="og:url" content="https://ttmusicid.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>TTMusicID - Identify TikTok Songs</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+    }
+    h1 {
+      color: #ff2a68;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #ff2a68;
+      color: white;
+      font-weight: bold;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .ad-slot {
+      margin: 20px 0;
+      background: #222;
+      height: 100px;
+      width: 100%;
+      max-width: 728px;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="bmi_calculator.html">BMI Calculator</a>
-        <a href="sleep_calculator.html">Sleep Calculator</a>
-        <a href="caffeine_calculator.html">Caffeine Calculator</a>
-    </nav>
-    
-    <div class="container">
-        <h1>Caffeine Overdose Calculator</h1>
-        <p>Are you drinking too much caffeine? This calculator estimates how many caffeinated drinks could be harmful based on your body weight.</p>
-        
-        <div class="image-container">
-            <img src="caffeine-chart.png" alt="Caffeine Content Chart" width="100%">
-        </div>
-        
-        <h2>Calculate Your Caffeine Limit</h2>
-        <label for="weight">Enter your weight (kg):</label>
-        <input type="number" id="weight" placeholder="Weight in kg">
-        
-        <label for="drink">Select your caffeinated drink:</label>
-        <select id="drink">
-            <option value="95">Coffee (95mg per cup)</option>
-            <option value="40">Cola (40mg per can)</option>
-            <option value="160">Energy Drink (160mg per can)</option>
-            <option value="63">Tea (63mg per cup)</option>
-        </select>
-        
-        <button onclick="calculateCaffeine()">Calculate</button>
-        
-        <h2 id="result"></h2>
-        
-        <h2>Understanding Caffeine Consumption</h2>
-        <p>The FDA recommends a maximum of 400mg of caffeine per day for healthy adults. Excessive caffeine can lead to negative effects such as:</p>
-        <ul>
-            <li>Increased heart rate and blood pressure</li>
-            <li>Insomnia and restlessness</li>
-            <li>Digestive issues</li>
-            <li>Dependency and withdrawal symptoms</li>
-        </ul>
-        
-        <h2>How to Reduce Caffeine Intake</h2>
-        <p>If you're consuming too much caffeine, consider these strategies:</p>
-        <ul>
-            <li>Gradually switch to decaf beverages</li>
-            <li>Replace energy drinks with natural alternatives like herbal tea</li>
-            <li>Drink more water to stay hydrated</li>
-            <li>Monitor hidden sources of caffeine, including chocolate and some medications</li>
-        </ul>
-    </div>
-    
-    <script>
-        function calculateCaffeine() {
-            let weight = document.getElementById("weight").value;
-            let caffeinePerDrink = document.getElementById("drink").value;
-            if (weight <= 0) {
-                document.getElementById("result").innerText = "Please enter a valid weight.";
-                return;
-            }
-            let lethalDose = weight * 150; // Lethal dose in mg
-            let maxDrinks = Math.floor(lethalDose / caffeinePerDrink);
-            document.getElementById("result").innerText = `Consuming around ${maxDrinks} of these drinks could be lethal.`;
+  <header>
+    <h1>TTMusicID</h1>
+    <p>Paste a TikTok video link to identify the song 🎶</p>
+  </header>
+
+  <div class="ad-slot" id="ad-top">Top Ad</div>
+
+  <form id="linkForm">
+    <input type="url" id="videoLink" placeholder="Paste TikTok link here..." required />
+    <button type="submit">Identify Song</button>
+  </form>
+
+  <div class="ad-slot" id="ad-mid">Mid Ad</div>
+
+  <div class="result" id="result">🎵 Song info will appear here</div>
+
+  <div class="ad-slot" id="ad-bottom">Footer Ad</div>
+
+  <script>
+    document.getElementById('linkForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const link = document.getElementById('videoLink').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = '⏳ Processing...';
+
+      try {
+        const response = await fetch('identify.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ link })
+        });
+        const data = await response.json();
+        if (data.success) {
+          resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
+        } else {
+          resultDiv.textContent = '❌ Song not found. Try a different video.';
         }
-    </script>
+      } catch (err) {
+        resultDiv.textContent = '⚠️ Error identifying the song.';
+      }
+    });
+  </script>
 </body>
 </html>
