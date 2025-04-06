@@ -28,20 +28,9 @@ function extractTikTokAudio($videoUrl) {
 
     curl_close($ch); // Close cURL session
 
-    // Parse the response from the API
-    $data = json_decode($response, true);
-    
-    // Check if the response contains the necessary music details
-    if (isset($data['music'])) {
-        return [
-            'success' => true,
-            'title' => $data['music']['title'],  // Song Title
-            'artist' => $data['music']['author'], // Artist Name
-            'audio_url' => $data['audio_url']    // Audio URL for direct access
-        ];
-    } else {
-        return ['success' => false, 'message' => 'Audio URL not found for this TikTok video.'];
-    }
+    // Log the raw API response for debugging
+    // Return response to frontend for debugging
+    return ['success' => true, 'raw_response' => $response];
 }
 
 // Handle the POST request from the frontend
@@ -64,4 +53,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
 
