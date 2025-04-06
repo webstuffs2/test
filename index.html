@@ -112,8 +112,6 @@
 
     document.getElementById('linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      console.log("Form submitted!");
-
       const resultDiv = document.getElementById('result');
       const lastUse = localStorage.getItem(cooldownKey);
 
@@ -145,10 +143,10 @@
             updateCountdown();
           }
         } else {
-          resultDiv.textContent = '❌ Song not found. Try a different video.';
+          resultDiv.innerHTML = `❌ Error: ${data.message || 'Song not found. Try a different video.'}`;
         }
       } catch (err) {
-        resultDiv.textContent = '⚠️ Error identifying the song.';
+        resultDiv.textContent = '⚠️ Error identifying the song. Please try again later.';
       }
     });
 
