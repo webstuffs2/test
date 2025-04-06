@@ -1,59 +1,50 @@
 <?php
-// Get JSON input
+// Get the POST data from the frontend (index.html)
 $data = json_decode(file_get_contents('php://input'), true);
-$videoUrl = $data['link'] ?? '';
+$link = $data['link']; // The TikTok link sent from the frontend
 
-// API credentials and URL
-$apiKey = 'ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142';
-$apiHost = 'tiktok-api23.p.rapidapi.com';
+// Your RapidAPI Key
+$rapidApiKey = "9ff9df4724mshc46ef2cef6b47e4p17c916jsn6fabfd0216bd"; 
 
-// Extract musicId from TikTok URL (you need to provide logic for this or send it from frontend)
-$musicId = ''; // Set this to extract from the TikTok video URL (This part is crucial)
+// Build the API URL (adjust based on what you're using)
+$apiUrl = 'https://tiktok-api23.p.rapidapi.com/api/music/info?musicId=7224128604890990593'; // Example URL, replace with actual dynamic URL if needed
 
-// Check if musicId is available
-if (empty($musicId)) {
-    echo json_encode(["success" => false, "error" => "Music ID not found in the provided link"]);
-    exit;
-}
-
-// Setup API endpoint and parameters
-$apiUrl = "https://tiktok-api23.p.rapidapi.com/api/music/info?musicId=$musicId";
-
-// Initialize cURL session
+// Initialize cURL
 $ch = curl_init();
+
+// Set the cURL options
 curl_setopt($ch, CURLOPT_URL, $apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "x-rapidapi-host: $apiHost",
-    "x-rapidapi-key: $apiKey"
+    'x-rapidapi-host: tiktok-api23.p.rapidapi.com',
+    'x-rapidapi-key: ' . $rapidApiKey
 ]);
 
-// Execute cURL and capture the response
+// Execute the cURL request and get the response
 $response = curl_exec($ch);
-curl_close($ch);
 
 // Check for errors
 if ($response === false) {
-    echo json_encode(["success" => false, "error" => "API request failed"]);
-    exit;
+    echo json_encode(['success' => false, 'message' => 'Error fetching data']);
+    exit();
 }
 
-// Decode the response from the API
+// Decode the JSON response
 $responseData = json_decode($response, true);
 
-// Check if the API returned valid data
-if (isset($responseData['data']) && !empty($responseData['data'])) {
-    $musicData = $responseData['data'];
-    $title = $musicData['title'] ?? 'Unknown Title';
-    $author = $musicData['author'] ?? 'Unknown Artist';
-    
-    // Respond with the song info
+// Check if the response contains the necessary data (song title and artist)
+if (isset($responseData['music_name']) && isset($responseData['author_name'])) {
+    $musicName = $responseData['music_name'];
+    $authorName = $responseData['author_name'];
     echo json_encode([
-        "success" => true,
-        "title" => $title,
-        "author" => $author
+        'success' => true,
+        'title' => $musicName,
+        'artist' => $authorName
     ]);
 } else {
-    echo json_encode(["success" => false, "error" => "Song not found."]);
+    echo json_encode(['success' => false, 'message' => 'Song not found']);
 }
+
+// Close the cURL session
+curl_close($ch);
 ?>
