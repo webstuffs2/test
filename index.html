@@ -3,110 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Identify songs from TikTok videos instantly with SongSearchers. Paste the link, and we'll find the music." />
-  <meta name="keywords" content="Song finder, identify music, find TikTok music, song search" />
-  <meta name="author" content="SongSearchers">
-  <meta property="og:title" content="SongSearchers - Find Any TikTok Song" />
-  <meta property="og:description" content="Paste a TikTok video link and discover the music instantly." />
+  <meta name="description" content="Identify songs from TikTok videos instantly with SongSearchers. Paste the link and discover the music behind the video." />
+  <meta name="keywords" content="find TikTok song, identify music from video, TikTok music finder, song identifier" />
+  <meta name="author" content="SongSearchers" />
+  <meta property="og:title" content="SongSearchers - Discover Music from TikTok" />
+  <meta property="og:description" content="Paste a TikTok video link and find the song instantly." />
   <meta property="og:image" content="preview.png" />
   <meta property="og:url" content="https://songsearchers.com" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>SongSearchers - Identify TikTok Songs</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <title>SongSearchers - Find TikTok Songs</title>
+  <link rel="icon" href="favicon.png" />
   <style>
     body {
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      justify-content: center;
       text-align: center;
-      overflow: hidden;
+      padding: 30px 15px;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 0.3em;
+      font-size: 2.8rem;
+      color: #ff2a68;
+      animation: bounce 1.5s infinite ease-in-out;
     }
 
-    .highlight {
-      background: linear-gradient(90deg, #ff2a68, #00f0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: bold;
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
-    .card {
-      background: #1f1f1f;
-      padding: 30px;
+    .intro {
+      max-width: 600px;
+      font-size: 1.15rem;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .form-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
       border-radius: 16px;
-      box-shadow: 0 0 30px rgba(255, 42, 104, 0.2);
-      max-width: 400px;
-      width: 90%;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(255, 42, 104, 0.2);
+      max-width: 500px;
+      width: 100%;
     }
 
     input, button {
-      width: 100%;
       padding: 12px;
-      border-radius: 12px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
       border: none;
-      margin-top: 12px;
       font-size: 1em;
     }
 
     input {
-      background: #333;
+      background: rgba(255, 255, 255, 0.1);
       color: #fff;
     }
 
     button {
-      background: linear-gradient(90deg, #ff2a68, #00f0ff);
-      color: #000;
+      background-color: #ff2a68;
+      color: white;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     button:hover {
+      background-color: #d21f56;
       transform: scale(1.03);
     }
 
     .result {
       margin-top: 20px;
       font-size: 1.2em;
-      color: #0ff;
+      color: #fff;
+    }
+
+    #cooldown {
+      font-size: 0.95em;
+      color: #ccc;
+      margin-top: 10px;
+    }
+
+    .seo-content {
+      margin-top: 50px;
+      max-width: 700px;
+      font-size: 1em;
+      color: #bbb;
+    }
+
+    .seo-content h2 {
+      color: #ff2a68;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .ezoic-ad {
+      margin: 40px 0;
+      width: 100%;
+      max-width: 700px;
+      min-height: 90px;
+      background-color: #222;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #555;
+      font-size: 0.9rem;
     }
 
     footer {
-      margin-top: 50px;
-      font-size: 0.8em;
-      color: #555;
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1><span class="highlight">SongSearchers</span></h1>
-    <p>Welcome to SongSearchers — Instantly identify songs from TikTok videos.</p>
+  <h1>SongSearchers</h1>
+  <p class="intro">Paste a TikTok video link below and discover the song behind it. Fast. Free. Accurate.</p>
+
+  <!-- Ezoic Placeholder 1 -->
+  <div class="ezoic-ad">[Ad Placeholder 1]</div>
+
+  <div class="form-wrapper">
     <form id="linkForm">
-      <input type="url" id="videoLink" placeholder="Paste TikTok link here..." required />
+      <input type="url" id="videoLink" placeholder="Paste TikTok video link here..." required />
       <button type="submit">Identify Song</button>
     </form>
-    <div class="result" id="result">🎶 Your result will appear here</div>
+    <div class="result" id="result">🎵 Song info will appear here</div>
+    <div id="cooldown"></div>
   </div>
 
+  <!-- Ezoic Placeholder 2 -->
+  <div class="ezoic-ad">[Ad Placeholder 2]</div>
+
+  <div class="seo-content">
+    <h2>Instant Song Discovery from TikTok</h2>
+    <p>Trying to figure out what song is playing in that viral TikTok clip? SongSearchers makes it easy. Just paste the link and we’ll do the rest.</p>
+    <p>Whether you're building playlists, curating reels, or simply satisfying your curiosity, we've got you covered.</p>
+    <ul style="text-align: left; list-style: disc; padding-left: 20px;">
+      <li>🎧 Works with TikTok video links</li>
+      <li>⚡ Fast, accurate song recognition</li>
+      <li>📱 No signups required</li>
+      <li>🎵 Built for music lovers and creators</li>
+    </ul>
+    <p>Discover hidden tracks, support emerging artists, and never miss a beat again.</p>
+  </div>
+
+  <!-- Ezoic Placeholder 3 -->
+  <div class="ezoic-ad">[Ad Placeholder 3]</div>
+
   <footer>
-    &copy; 2025 SongSearchers. All rights reserved.
+    © 2025 SongSearchers. All rights reserved.
   </footer>
 
   <script>
+    window.onload = () => {
+      document.getElementById('videoLink').focus();
+    };
+
     const cooldownKey = 'lastUseTimestamp';
-    const cooldownTime = 3600 * 1000; // 1 hour in ms
+    const cooldownTime = 3600 * 1000; // 1 hour
 
     function updateCountdown() {
       const lastUse = localStorage.getItem(cooldownKey);
@@ -131,7 +199,7 @@
       const lastUse = localStorage.getItem(cooldownKey);
 
       if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
-        resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
+        resultDiv.textContent = '🚫 Limit reached. Try again later.';
         updateCountdown();
         return;
       }
