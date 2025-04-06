@@ -95,60 +95,46 @@
   </div>
 
   <script>
-    const cooldownKey = 'lastUseTimestamp';
-    const cooldownTime = 3600 * 1000; // 1 hour in ms
+  document.getElementById('linkForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const resultDiv = document.getElementById('result');
+    const lastUse = localStorage.getItem(cooldownKey);
 
-    function updateCountdown() {
-      const lastUse = localStorage.getItem(cooldownKey);
-      if (!lastUse) return;
-
-      const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
-      const countdown = document.getElementById('cooldown');
-
-      if (timeLeft > 0) {
-        const minutes = Math.floor(timeLeft / 60000);
-        const seconds = Math.floor((timeLeft % 60000) / 1000);
-        countdown.textContent = `⏳ Try again in ${minutes}m ${seconds}s`;
-        setTimeout(updateCountdown, 1000);
-      } else {
-        countdown.textContent = '';
-      }
+    if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
+      resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
+      updateCountdown();
+      return;
     }
 
-    document.getElementById('linkForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const resultDiv = document.getElementById('result');
-      const lastUse = localStorage.getItem(cooldownKey);
+    const link = document.getElementById('videoLink').value.trim();
+    resultDiv.textContent = '⏳ Processing...';
 
-      if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
-        resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
-        updateCountdown();
-        return;
-      }
+    try {
+      const response = await fetch('identify.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ link })
+      });
+      const data = await response.json();
 
-      const link = document.getElementById('videoLink').value.trim();
-      resultDiv.textContent = '⏳ Processing...';
-
-      try {
-        const response = await fetch('identify.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ link })
-        });
-        const data = await response.json();
-        if (data.success) {
+      if (data.success) {
+        if (data.raw_response) {
+          // Show the raw response in case of issues
+          resultDiv.innerHTML = `<pre>Raw Response: ${JSON.stringify(data.raw_response, null, 2)}</pre>`;
+        } else {
           resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
           localStorage.setItem(cooldownKey, Date.now());
           updateCountdown();
-        } else {
-          resultDiv.textContent = '❌ Song not found. Try a different video.';
         }
-      } catch (err) {
-        resultDiv.textContent = '⚠️ Error identifying the song.';
+      } else {
+        resultDiv.textContent = '❌ Song not found. Try a different video.';
       }
-    });
+    } catch (err) {
+      resultDiv.textContent = '⚠️ Error identifying the song.';
+    }
+  });
 
-    updateCountdown();
-  </script>
+  updateCountdown();
+</script>
 </body>
 </html>
