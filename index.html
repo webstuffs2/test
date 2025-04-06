@@ -13,6 +13,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <title>TTMusicID - Identify TikTok Songs</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -31,6 +32,13 @@
     h1 {
       color: #ff2a68;
     }
+    p.intro {
+      max-width: 600px;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 1.2em;
+      color: #ccc;
+    }
     input, button {
       padding: 10px;
       margin: 10px;
@@ -43,6 +51,12 @@
       background-color: #ff2a68;
       color: white;
       font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background-color: #d21f56;
+      transform: scale(1.05);
     }
     .result {
       margin-top: 20px;
@@ -59,7 +73,9 @@
 <body>
   <header>
     <h1>TTMusicID</h1>
-    <p>Paste a TikTok video link to identify the song 🎶</p>
+    <p class="intro">
+      Welcome to TTMusicID! Easily identify the song playing in any TikTok video. Just paste the link, and we'll instantly tell you the music title and artist.
+    </p>
   </header>
 
   <form id="linkForm">
