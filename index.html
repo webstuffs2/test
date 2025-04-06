@@ -65,9 +65,13 @@
       width: 100%;
     }
 
+    /* Fix for the text box width */
     input {
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
+      width: calc(100% - 24px); /* Set width equal to the button with a small margin on either side */
+      margin-left: 12px; /* Add padding between the edges and the input */
+      margin-right: 12px;
     }
 
     button {
