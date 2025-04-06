@@ -5,7 +5,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $link = $data['link'];  // The TikTok link sent from the frontend
 
 // Your NEW RapidAPI Key (replace this with the one you provided)
-$rapidApiKey = "ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142"; 
+$rapidApiKey = "9ff9df4724mshc46ef2cef6b47e4p17c916jsn6fabfd0216bd"; 
 
 // Extract the TikTok video ID from the link
 preg_match('/\/video\/(\d+)/', $link, $matches);
