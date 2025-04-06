@@ -3,135 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SongSearchers — Instantly identify music from TikTok videos. Paste a link, click search, and discover the song." />
-  <meta name="keywords" content="song finder, TikTok music, identify TikTok song, SongSearchers, music recognition" />
-  <meta name="author" content="SongSearchers" />
-  <meta property="og:title" content="SongSearchers - Instantly Identify Songs from Videos" />
-  <meta property="og:description" content="Paste a TikTok link and discover the music instantly. Fast, free, and accurate song recognition." />
+  <meta name="description" content="Identify songs from TikTok videos instantly with SongSearchers. Paste the link, and we'll find the music." />
+  <meta name="keywords" content="Song finder, identify music, find TikTok music, song search" />
+  <meta name="author" content="SongSearchers">
+  <meta property="og:title" content="SongSearchers - Find Any TikTok Song" />
+  <meta property="og:description" content="Paste a TikTok video link and discover the music instantly." />
   <meta property="og:image" content="preview.png" />
   <meta property="og:url" content="https://songsearchers.com" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>SongSearchers - Identify TikTok Songs Instantly</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-
+  <title>SongSearchers - Identify TikTok Songs</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: #121212;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
       color: #fff;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      min-height: 100vh;
+      justify-content: center;
       text-align: center;
+      overflow: hidden;
     }
-    header {
-      text-align: center;
-    }
+
     h1 {
-      color: #ff2a68;
-      margin-bottom: 0.5em;
+      font-size: 2.5em;
+      margin-bottom: 0.3em;
     }
-    p.intro {
-      max-width: 700px;
-      font-size: 1.1em;
-      color: #ccc;
-      margin-bottom: 30px;
+
+    .highlight {
+      background: linear-gradient(90deg, #ff2a68, #00f0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
     }
-    .features {
-      max-width: 700px;
-      margin-top: 20px;
-      line-height: 1.6em;
-      font-size: 0.95em;
-      color: #bbb;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    ul li {
-      margin-bottom: 10px;
-    }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      width: 90%;
+
+    .card {
+      background: #1f1f1f;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(255, 42, 104, 0.2);
       max-width: 400px;
-      border-radius: 8px;
-      border: none;
+      width: 90%;
     }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      margin-top: 12px;
+      font-size: 1em;
+    }
+
+    input {
+      background: #333;
+      color: #fff;
+    }
+
     button {
-      background-color: #ff2a68;
-      color: white;
+      background: linear-gradient(90deg, #ff2a68, #00f0ff);
+      color: #000;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
+      transition: transform 0.2s;
     }
+
     button:hover {
-      background-color: #d21f56;
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
+
     .result {
       margin-top: 20px;
       font-size: 1.2em;
+      color: #0ff;
     }
-    #cooldown {
-      font-size: 0.95em;
-      color: #ccc;
-      margin-top: 10px;
-    }
+
     footer {
-      margin-top: 40px;
-      font-size: 0.85em;
-      color: #777;
+      margin-top: 50px;
+      font-size: 0.8em;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>SongSearchers</h1>
-    <p class="intro">
-      🎧 Instantly identify music from TikTok videos. Just paste a link, click "Identify", and get the song. Fast, free, and accurate — no signup needed.
-    </p>
-  </header>
-
-  <form id="linkForm">
-    <input type="url" id="videoLink" placeholder="Paste TikTok video link here..." required />
-    <button type="submit">Identify Song</button>
-  </form>
-
-  <div class="result" id="result">🎵 Song info will appear here</div>
-  <div id="cooldown"></div>
-
-  <div class="features">
-    <h3>🔍 How It Works</h3>
-    <ul>
-      <li>Paste the video link from TikTok</li>
-      <li>Click “Identify” — our tool analyzes the video</li>
-      <li>Get instant results — song title, artist, and more</li>
-    </ul>
-
-    <h3>🚀 Why SongSearchers?</h3>
-    <ul>
-      <li>✅ Works with TikTok (more platforms coming soon)</li>
-      <li>✅ Fast, clean results — no fluff</li>
-      <li>✅ Designed for music lovers and creators</li>
-      <li>✅ 100% Free to use</li>
-    </ul>
-
-    <h3>💡 What You Can Do</h3>
-    <ul>
-      <li>🎶 Identify that TikTok tune stuck in your head</li>
-      <li>🎤 Discover hidden artists and viral tracks</li>
-      <li>📱 Build playlists from trending videos</li>
-      <li>💡 Be the friend who always knows the song</li>
-    </ul>
+  <div class="card">
+    <h1><span class="highlight">SongSearchers</span></h1>
+    <p>Welcome to SongSearchers — Instantly identify songs from TikTok videos.</p>
+    <form id="linkForm">
+      <input type="url" id="videoLink" placeholder="Paste TikTok link here..." required />
+      <button type="submit">Identify Song</button>
+    </form>
+    <div class="result" id="result">🎶 Your result will appear here</div>
   </div>
 
   <footer>
-    &copy; <script>document.write(new Date().getFullYear())</script> SongSearchers. All rights reserved.
+    &copy; 2025 SongSearchers. All rights reserved.
   </footer>
 
   <script>
