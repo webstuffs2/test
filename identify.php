@@ -1,67 +1,75 @@
 <?php
+// Get the raw POST data from the request
+$data = json_decode(file_get_contents("php://input"), true);
 
-// Enable error reporting to debug
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Get the POST data (link sent from frontend)
-$data = json_decode(file_get_contents('php://input'), true);
-$videoLink = $data['link'] ?? '';
-
-// Check if the video link is valid
-if (empty($videoLink)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid link. Please provide a valid TikTok video URL.']);
-    exit;
-}
-
-// The RapidAPI URL for TikTok feature summary API
-$apiUrl = 'https://tiktok-video-feature-summary.p.rapidapi.com/';
-$apiKey = 'ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142'; // Your actual API key
-$encodedLink = urlencode($videoLink); // Encode the URL to pass as a parameter
-
-// Prepare the headers for the API request
-$headers = [
-    "x-rapidapi-host: tiktok-video-feature-summary.p.rapidapi.com",
-    "x-rapidapi-key: $apiKey"
-];
-
-// Make the API request using cURL
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $apiUrl . "?url=$encodedLink&hd=1");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-// Execute the cURL request
-$response = curl_exec($ch);
-
-// Check for cURL errors
-if (curl_errno($ch)) {
-    echo json_encode(['success' => false, 'message' => 'Error fetching data from the API. Please try again later.']);
-    exit;
-}
-
-curl_close($ch);
-
-// Decode the API response
-$responseData = json_decode($response, true);
-
-// Check if the response contains valid data
-if (isset($responseData['data']) && isset($responseData['data']['music'])) {
-    $music = $responseData['data']['music'];
-    $title = $music['title'] ?? 'Unknown title';
-    $artist = $music['authorName'] ?? 'Unknown artist';
-
-    // Return the identified music details
-    echo json_encode([
-        'success' => true,
-        'title' => $title,
-        'artist' => $artist
-    ]);
+// Ensure the 'link' key is present in the data
+if (isset($data['link'])) {
+    // Extract the TikTok video URL
+    $videoLink = $data['link'];
+    
+    // Extract the video ID from the URL
+    preg_match('/(?:https?:\/\/(?:www\.)?tiktok\.com\/(?:@[\w.-]+\/)?video\/(\d+))/', $videoLink, $matches);
+    
+    if (isset($matches[1])) {
+        // Get the TikTok video ID
+        $videoID = $matches[1];
+        
+        // API URL with the new endpoint to fetch music info based on the video ID
+        $apiUrl = 'https://tiktok-video-feature-summary.p.rapidapi.com/music/info?url=' . $videoID;
+        
+        // Initialize cURL session
+        $ch = curl_init();
+        
+        // Set the cURL options
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "x-rapidapi-host: tiktok-video-feature-summary.p.rapidapi.com",
+            "x-rapidapi-key: ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142" // Replace with your actual RapidAPI key
+        ]);
+        
+        // Execute the cURL request
+        $response = curl_exec($ch);
+        
+        // Check for errors in the request
+        if (curl_errno($ch)) {
+            $responseData = ['success' => false, 'error' => 'Unable to connect to API'];
+        } else {
+            // Parse the API response
+            $data = json_decode($response, true);
+            
+            // Check if music information is available
+            if (isset($data['music']['title']) && isset($data['music']['author'])) {
+                // Return the song info
+                $responseData = [
+                    'success' => true,
+                    'title' => $data['music']['title'],
+                    'author' => $data['music']['author']
+                ];
+            } else {
+                // Handle case when music info is not found
+                $responseData = ['success' => false, 'error' => 'Song information not found.'];
+            }
+        }
+        
+        // Close the cURL session
+        curl_close($ch);
+        
+    } else {
+        // Handle case when video ID cannot be extracted
+        $responseData = ['success' => false, 'error' => 'Invalid TikTok URL.'];
+    }
 } else {
-    // Return an error message if no music data is found in the response
-    echo json_encode(['success' => false, 'message' => 'No music data found. Please try a different TikTok video.']);
+    // Handle case where no link was provided
+    $responseData = ['success' => false, 'error' => 'No link provided.'];
 }
+
+// Return the response as JSON
+header('Content-Type: application/json');
+echo json_encode($responseData);
 ?>
+
 
 
 
