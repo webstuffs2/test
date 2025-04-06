@@ -3,66 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SongSearchers helps you find songs from TikTok videos instantly. Paste a video link and discover the music behind it." />
-  <meta name="keywords" content="find TikTok songs, identify TikTok music, song search, song identifier, music from videos" />
-  <meta name="author" content="SongSearchers">
-  <meta property="og:title" content="SongSearchers - Instantly Identify TikTok Songs" />
-  <meta property="og:description" content="Paste a TikTok video link and discover the music behind it. Fast, accurate, and free." />
+  <meta name="description" content="Identify songs from TikTok videos instantly with SongSearchers. Paste the link and discover the music behind the video." />
+  <meta name="keywords" content="find TikTok song, identify music from video, TikTok music finder, song identifier" />
+  <meta name="author" content="SongSearchers" />
+  <meta property="og:title" content="SongSearchers - Discover Music from TikTok" />
+  <meta property="og:description" content="Paste a TikTok video link and find the song instantly." />
   <meta property="og:image" content="preview.png" />
   <meta property="og:url" content="https://songsearchers.com" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>SongSearchers - Instantly Identify TikTok Songs</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>SongSearchers - Find TikTok Songs</title>
+  <link rel="icon" href="favicon.png" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #000000, #1a1a1a);
-      color: white;
       margin: 0;
       padding: 0;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-
-    header {
       text-align: center;
-      padding: 40px 20px 20px;
+      padding: 30px 15px;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      font-size: 2.8rem;
       color: #ff2a68;
+      animation: bounce 1.5s infinite ease-in-out;
     }
 
-    p.intro {
-      max-width: 700px;
-      font-size: 1.2em;
-      margin: 0 auto 30px;
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .intro {
+      max-width: 600px;
+      font-size: 1.15rem;
       color: #ccc;
-    }
-
-    .container {
-      background: #1f1f1f;
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 0 15px #ff2a68;
-      text-align: center;
       margin-bottom: 30px;
     }
 
-    input[type="url"] {
+    .form-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(255, 42, 104, 0.2);
+      max-width: 500px;
       width: 100%;
-      max-width: 400px;
+    }
+
+    input, button {
       padding: 12px;
-      border-radius: 8px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
       border: none;
-      margin-bottom: 15px;
       font-size: 1em;
-      box-sizing: border-box;
+    }
+
+    input {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
 
     button {
@@ -70,70 +74,69 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      font-size: 1rem;
-      width: 100%;
-      max-width: 400px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     button:hover {
       background-color: #d21f56;
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
 
     .result {
       margin-top: 20px;
       font-size: 1.2em;
+      color: #fff;
     }
 
     #cooldown {
+      font-size: 0.95em;
+      color: #ccc;
       margin-top: 10px;
-      color: #aaa;
-      font-size: 0.9em;
     }
 
-    .seo-text {
+    .seo-content {
+      margin-top: 50px;
       max-width: 700px;
-      margin: 40px auto;
-      text-align: center;
-      color: #bbb;
-      line-height: 1.6;
       font-size: 1em;
-      padding: 0 20px;
+      color: #bbb;
+    }
+
+    .seo-content h2 {
+      color: #ff2a68;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .ezoic-ad {
+      margin: 40px 0;
+      width: 100%;
+      max-width: 700px;
+      min-height: 90px;
+      background-color: #222;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #555;
+      font-size: 0.9rem;
     }
 
     footer {
-      text-align: center;
-      margin: 40px 0 20px;
+      margin-top: 60px;
       font-size: 0.9em;
       color: #666;
-    }
-
-    .ad-placeholder {
-      background: #2c2c2c;
-      border: 1px dashed #444;
-      height: 90px;
-      margin: 30px auto;
-      width: 90%;
-      max-width: 728px;
-      text-align: center;
-      line-height: 90px;
-      color: #666;
-      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
+  <h1>SongSearchers</h1>
+  <p class="intro">Paste a TikTok video link below and discover the song behind it. Fast. Free. Accurate.</p>
 
-  <header>
-    <h1>SongSearchers</h1>
-    <p class="intro">Identify songs from TikTok videos instantly. Paste the link, click search, and get the song info. Simple, fast, free.</p>
-  </header>
+  <!-- Ezoic Placeholder 1 -->
+  <div class="ezoic-ad">[Ad Placeholder 1]</div>
 
-  <div class="container">
+  <div class="form-wrapper">
     <form id="linkForm">
       <input type="url" id="videoLink" placeholder="Paste TikTok video link here..." required />
       <button type="submit">Identify Song</button>
@@ -142,51 +145,44 @@
     <div id="cooldown"></div>
   </div>
 
-  <!-- Ezoic Ad Placeholder 1 -->
-  <div class="ad-placeholder">[Ad Placeholder 1]</div>
+  <!-- Ezoic Placeholder 2 -->
+  <div class="ezoic-ad">[Ad Placeholder 2]</div>
 
-  <div class="seo-text">
-    <h2>🎧 Discover the Music Behind the Videos</h2>
-    <p>
-      Whether it’s that catchy beat in a TikTok dance or a chill background song in a viral clip — SongSearchers helps you find it.
-      Our tool analyzes public TikTok video links and returns the song title and artist info within seconds.
-    </p>
-    <p>
-      No accounts, no noise. Just quick and accurate music recognition made for fans, creators, and curious minds.
-    </p>
-  </div>
-
-  <!-- Ezoic Ad Placeholder 2 -->
-  <div class="ad-placeholder">[Ad Placeholder 2]</div>
-
-  <div class="seo-text">
-    <h2>🚀 Why SongSearchers?</h2>
-    <ul style="list-style: none; padding: 0;">
-      <li>✅ TikTok-focused music ID</li>
-      <li>✅ No sign-ups or spam</li>
-      <li>✅ Free, accurate, and fast</li>
+  <div class="seo-content">
+    <h2>Instant Song Discovery from TikTok</h2>
+    <p>Trying to figure out what song is playing in that viral TikTok clip? SongSearchers makes it easy. Just paste the link and we’ll do the rest.</p>
+    <p>Whether you're building playlists, curating reels, or simply satisfying your curiosity, we've got you covered.</p>
+    <ul style="text-align: left; list-style: disc; padding-left: 20px;">
+      <li>🎧 Works with TikTok video links</li>
+      <li>⚡ Fast, accurate song recognition</li>
+      <li>📱 No signups required</li>
+      <li>🎵 Built for music lovers and creators</li>
     </ul>
-    <p>Paste a TikTok link above and discover your next favorite track.</p>
+    <p>Discover hidden tracks, support emerging artists, and never miss a beat again.</p>
   </div>
 
-  <!-- Ezoic Ad Placeholder 3 -->
-  <div class="ad-placeholder">[Ad Placeholder 3]</div>
+  <!-- Ezoic Placeholder 3 -->
+  <div class="ezoic-ad">[Ad Placeholder 3]</div>
 
   <footer>
-    © <span id="year"></span> SongSearchers.com. All rights reserved.
+    © 2025 SongSearchers. All rights reserved.
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    window.onload = () => {
+      document.getElementById('videoLink').focus();
+    };
 
     const cooldownKey = 'lastUseTimestamp';
-    const cooldownTime = 3600 * 1000;
+    const cooldownTime = 3600 * 1000; // 1 hour
 
     function updateCountdown() {
       const lastUse = localStorage.getItem(cooldownKey);
       if (!lastUse) return;
+
       const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
       const countdown = document.getElementById('cooldown');
+
       if (timeLeft > 0) {
         const minutes = Math.floor(timeLeft / 60000);
         const seconds = Math.floor((timeLeft % 60000) / 1000);
@@ -200,25 +196,24 @@
     document.getElementById('linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const resultDiv = document.getElementById('result');
-      const link = document.getElementById('videoLink').value.trim();
-
       const lastUse = localStorage.getItem(cooldownKey);
+
       if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
         resultDiv.textContent = '🚫 Limit reached. Try again later.';
         updateCountdown();
         return;
       }
 
-      resultDiv.textContent = '⏳ Identifying...';
+      const link = document.getElementById('videoLink').value.trim();
+      resultDiv.textContent = '⏳ Processing...';
 
       try {
-        const res = await fetch('identify.php', {
+        const response = await fetch('identify.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ link })
         });
-        const data = await res.json();
-
+        const data = await response.json();
         if (data.success) {
           resultDiv.innerHTML = `✅ <strong>${data.author}</strong> - ${data.title}`;
           localStorage.setItem(cooldownKey, Date.now());
@@ -226,8 +221,8 @@
         } else {
           resultDiv.textContent = `❌ Error: ${data.error}`;
         }
-      } catch {
-        resultDiv.textContent = '⚠️ Could not identify the song.';
+      } catch (err) {
+        resultDiv.textContent = '⚠️ Error identifying the song.';
       }
     });
 
