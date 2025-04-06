@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SongsFind — Instantly identify music from TikTok videos. Paste a link, click search, and discover the song." />
-  <meta name="keywords" content="song finder, TikTok music, identify TikTok song, SongsFind, music recognition" />
-  <meta name="author" content="SongsFind" />
-  <meta property="og:title" content="SongsFind - Instantly Identify Songs from Videos" />
+  <meta name="description" content="SongSearchers — Instantly identify music from TikTok videos. Paste a link, click search, and discover the song." />
+  <meta name="keywords" content="song finder, TikTok music, identify TikTok song, SongSearchers, music recognition" />
+  <meta name="author" content="SongSearchers" />
+  <meta property="og:title" content="SongSearchers - Instantly Identify Songs from Videos" />
   <meta property="og:description" content="Paste a TikTok link and discover the music instantly. Fast, free, and accurate song recognition." />
   <meta property="og:image" content="preview.png" />
   <meta property="og:url" content="https://songsearchers.com" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>SongsFind - Identify TikTok Songs Instantly</title>
+  <title>SongSearchers - Identify TikTok Songs Instantly</title>
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -25,6 +25,7 @@
       flex-direction: column;
       align-items: center;
       padding: 20px;
+      text-align: center;
     }
     header {
       text-align: center;
@@ -35,18 +36,23 @@
     }
     p.intro {
       max-width: 700px;
-      text-align: center;
       font-size: 1.1em;
       color: #ccc;
       margin-bottom: 30px;
     }
     .features {
       max-width: 700px;
-      text-align: left;
       margin-top: 20px;
       line-height: 1.6em;
       font-size: 0.95em;
       color: #bbb;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin-bottom: 10px;
     }
     input, button {
       padding: 10px;
@@ -70,18 +76,22 @@
     .result {
       margin-top: 20px;
       font-size: 1.2em;
-      text-align: center;
     }
     #cooldown {
       font-size: 0.95em;
       color: #ccc;
       margin-top: 10px;
     }
+    footer {
+      margin-top: 40px;
+      font-size: 0.85em;
+      color: #777;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>SongsFind</h1>
+    <h1>SongSearchers</h1>
     <p class="intro">
       🎧 Instantly identify music from TikTok videos. Just paste a link, click "Identify", and get the song. Fast, free, and accurate — no signup needed.
     </p>
@@ -103,9 +113,9 @@
       <li>Get instant results — song title, artist, and more</li>
     </ul>
 
-    <h3>🚀 Why SongsFind?</h3>
+    <h3>🚀 Why SongSearchers?</h3>
     <ul>
-      <li>✅ Works with TikTok (more coming soon!)</li>
+      <li>✅ Works with TikTok (more platforms coming soon)</li>
       <li>✅ Fast, clean results — no fluff</li>
       <li>✅ Designed for music lovers and creators</li>
       <li>✅ 100% Free to use</li>
@@ -118,12 +128,11 @@
       <li>📱 Build playlists from trending videos</li>
       <li>💡 Be the friend who always knows the song</li>
     </ul>
-
-    <h3>📈 Built for the Music Discovery Era</h3>
-    <p>Every week, millions hear new songs in short-form videos. <strong>SongsFind</strong> helps you bridge the gap between sound and source.</p>
-
-    <p><strong>SongsFind — Because no good beat should go unidentified.</strong></p>
   </div>
+
+  <footer>
+    &copy; <script>document.write(new Date().getFullYear())</script> SongSearchers. All rights reserved.
+  </footer>
 
   <script>
     const cooldownKey = 'lastUseTimestamp';
