@@ -45,9 +45,6 @@ curl_close($ch);
 // Decode the API response
 $responseData = json_decode($response, true);
 
-// Debugging output (optional)
-file_put_contents('debug.txt', print_r($responseData, true));  // Save raw response to file for debugging
-
 // Check if the response contains valid data
 if (isset($responseData['data']) && isset($responseData['data']['music'])) {
     $music = $responseData['data']['music'];
@@ -65,6 +62,7 @@ if (isset($responseData['data']) && isset($responseData['data']['music'])) {
     echo json_encode(['success' => false, 'message' => 'Song not found in TikTok video.']);
 }
 ?>
+
 
 
 
