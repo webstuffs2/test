@@ -6,8 +6,18 @@ $link = $data['link']; // The TikTok link sent from the frontend
 // Your RapidAPI Key
 $rapidApiKey = "9ff9df4724mshc46ef2cef6b47e4p17c916jsn6fabfd0216bd"; 
 
-// Build the API URL (adjust based on what you're using)
-$apiUrl = 'https://tiktok-api23.p.rapidapi.com/api/music/info?musicId=7224128604890990593'; // Example URL, replace with actual dynamic URL if needed
+// Extract the TikTok video ID from the link
+preg_match('/\/video\/(\d+)/', $link, $matches);
+$videoId = $matches[1];
+
+// If no video ID was found, return an error
+if (!$videoId) {
+    echo json_encode(['success' => false, 'message' => 'Invalid TikTok URL']);
+    exit();
+}
+
+// Build the API URL dynamically using the videoId
+$apiUrl = 'https://tiktok-api23.p.rapidapi.com/api/music/info?musicId=' . $videoId; 
 
 // Initialize cURL
 $ch = curl_init();
@@ -48,3 +58,4 @@ if (isset($responseData['music_name']) && isset($responseData['author_name'])) {
 // Close the cURL session
 curl_close($ch);
 ?>
+
