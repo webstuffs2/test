@@ -1,4 +1,3 @@
-<!-- index.html with Ezoic ad placeholders -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +14,6 @@
   <title>TTMusicID - Identify TikTok Songs</title>
   <link rel="icon" type="image/png" href="favicon.png">
   
-  <!-- EZ Script Placeholder -->
-  <!-- Insert your Ezoic script tag below -->
-  <!-- <script src="//your-ezoic-tag.js"></script> -->
-
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -95,46 +90,69 @@
   </div>
 
   <script>
-  document.getElementById('linkForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const resultDiv = document.getElementById('result');
-    const lastUse = localStorage.getItem(cooldownKey);
+    const cooldownKey = 'lastUseTimestamp';
+    const cooldownTime = 3600 * 1000; // 1 hour in ms
 
-    if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
-      resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
-      updateCountdown();
-      return;
-    }
+    function updateCountdown() {
+      const lastUse = localStorage.getItem(cooldownKey);
+      if (!lastUse) return;
 
-    const link = document.getElementById('videoLink').value.trim();
-    resultDiv.textContent = '⏳ Processing...';
+      const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
+      const countdown = document.getElementById('cooldown');
 
-    try {
-      const response = await fetch('identify.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ link })
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        if (data.raw_response) {
-          // Show the raw response in case of issues
-          resultDiv.innerHTML = `<pre>Raw Response: ${JSON.stringify(data.raw_response, null, 2)}</pre>`;
-        } else {
-          resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
-          localStorage.setItem(cooldownKey, Date.now());
-          updateCountdown();
-        }
+      if (timeLeft > 0) {
+        const minutes = Math.floor(timeLeft / 60000);
+        const seconds = Math.floor((timeLeft % 60000) / 1000);
+        countdown.textContent = `⏳ Try again in ${minutes}m ${seconds}s`;
+        setTimeout(updateCountdown, 1000);
       } else {
-        resultDiv.textContent = '❌ Song not found. Try a different video.';
+        countdown.textContent = '';
       }
-    } catch (err) {
-      resultDiv.textContent = '⚠️ Error identifying the song.';
     }
-  });
 
-  updateCountdown();
-</script>
+    document.getElementById('linkForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      console.log("Form submitted!");
+
+      const resultDiv = document.getElementById('result');
+      const lastUse = localStorage.getItem(cooldownKey);
+
+      if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
+        resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
+        updateCountdown();
+        return;
+      }
+
+      const link = document.getElementById('videoLink').value.trim();
+      resultDiv.textContent = '⏳ Processing...';
+
+      try {
+        const response = await fetch('identify.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ link })
+        });
+        const data = await response.json();
+
+        console.log("Response Data:", data);
+
+        if (data.success) {
+          if (data.raw_response) {
+            resultDiv.innerHTML = `<pre>Raw Response: ${JSON.stringify(data.raw_response, null, 2)}</pre>`;
+          } else {
+            resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
+            localStorage.setItem(cooldownKey, Date.now());
+            updateCountdown();
+          }
+        } else {
+          resultDiv.textContent = '❌ Song not found. Try a different video.';
+        }
+      } catch (err) {
+        resultDiv.textContent = '⚠️ Error identifying the song.';
+      }
+    });
+
+    updateCountdown();
+  </script>
 </body>
 </html>
