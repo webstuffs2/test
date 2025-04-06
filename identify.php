@@ -15,7 +15,7 @@ if (isset($data['link'])) {
         $videoID = $matches[1];
         
         // API URL with the new endpoint to fetch music info based on the video ID
-        $apiUrl = 'https://tiktok-video-feature-summary.p.rapidapi.com/music/info?url=' . $videoID;
+        $apiUrl = 'https://tiktok-video-feature-summary.p.rapidapi.com/music/info?url=' . urlencode('https://www.tiktok.com/@spider_slack/video/' . $videoID);
         
         // Initialize cURL session
         $ch = curl_init();
@@ -34,7 +34,8 @@ if (isset($data['link'])) {
         
         // Check for errors in the request
         if (curl_errno($ch)) {
-            $responseData = ['success' => false, 'error' => 'Unable to connect to API'];
+            // If there is an error, return a failure response
+            $responseData = ['success' => false, 'error' => 'Error connecting to API'];
         } else {
             // Parse the API response
             $data = json_decode($response, true);
@@ -48,7 +49,7 @@ if (isset($data['link'])) {
                     'author' => $data['music']['author']
                 ];
             } else {
-                // Handle case when music info is not found
+                // If no music information is found, return a failure message
                 $responseData = ['success' => false, 'error' => 'Song information not found.'];
             }
         }
@@ -57,11 +58,11 @@ if (isset($data['link'])) {
         curl_close($ch);
         
     } else {
-        // Handle case when video ID cannot be extracted
+        // If video ID cannot be extracted, return an error
         $responseData = ['success' => false, 'error' => 'Invalid TikTok URL.'];
     }
 } else {
-    // Handle case where no link was provided
+    // If no link was provided, return an error
     $responseData = ['success' => false, 'error' => 'No link provided.'];
 }
 
@@ -69,6 +70,7 @@ if (isset($data['link'])) {
 header('Content-Type: application/json');
 echo json_encode($responseData);
 ?>
+
 
 
 
