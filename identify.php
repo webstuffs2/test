@@ -10,7 +10,7 @@ $videoLink = $data['link'] ?? '';
 
 // Check if the video link is valid
 if (empty($videoLink)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid link.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid link. Please provide a valid TikTok video URL.']);
     exit;
 }
 
@@ -34,9 +34,9 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 // Execute the cURL request
 $response = curl_exec($ch);
 
-// Check for errors in the request
+// Check for cURL errors
 if (curl_errno($ch)) {
-    echo json_encode(['success' => false, 'message' => 'Error fetching data from API.']);
+    echo json_encode(['success' => false, 'message' => 'Error fetching data from the API. Please try again later.']);
     exit;
 }
 
@@ -58,10 +58,11 @@ if (isset($responseData['data']) && isset($responseData['data']['music'])) {
         'artist' => $artist
     ]);
 } else {
-    // Return an error if no music data found
-    echo json_encode(['success' => false, 'message' => 'Song not found in TikTok video.']);
+    // Return an error message if no music data is found in the response
+    echo json_encode(['success' => false, 'message' => 'No music data found. Please try a different TikTok video.']);
 }
 ?>
+
 
 
 
