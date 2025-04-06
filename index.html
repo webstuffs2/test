@@ -122,11 +122,15 @@
       resultDiv.textContent = '⏳ Processing...';
 
       try {
+        // Send the TikTok URL as a JSON object to the backend (identify.php)
         const response = await fetch('identify.php', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ link })
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ link })  // Send the TikTok URL inside a JSON object
         });
+
         const data = await response.json();
         if (data.success) {
           resultDiv.innerHTML = `✅ <strong>${data.author}</strong> - ${data.title}`;
