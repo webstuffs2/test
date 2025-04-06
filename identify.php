@@ -1,79 +1,59 @@
 <?php
-// Get the raw POST data from the request
-$data = json_decode(file_get_contents("php://input"), true);
+// Get JSON input
+$data = json_decode(file_get_contents('php://input'), true);
+$videoUrl = $data['link'] ?? '';
 
-// Ensure the 'link' key is present in the data
-if (isset($data['link'])) {
-    // Extract the TikTok video URL
-    $videoLink = $data['link'];
-    
-    // Extract the video ID from the URL
-    preg_match('/(?:https?:\/\/(?:www\.)?tiktok\.com\/(?:@[\w.-]+\/)?video\/(\d+))/', $videoLink, $matches);
-    
-    if (isset($matches[1])) {
-        // Get the TikTok video ID
-        $videoID = $matches[1];
-        
-        // API URL with the new endpoint to fetch music info based on the video ID
-        $apiUrl = 'https://tiktok-video-feature-summary.p.rapidapi.com/music/info?url=' . urlencode('https://www.tiktok.com/@spider_slack/video/' . $videoID);
-        
-        // Initialize cURL session
-        $ch = curl_init();
-        
-        // Set the cURL options
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "x-rapidapi-host: tiktok-video-feature-summary.p.rapidapi.com",
-            "x-rapidapi-key: ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142" // Replace with your actual RapidAPI key
-        ]);
-        
-        // Execute the cURL request
-        $response = curl_exec($ch);
-        
-        // Check for errors in the request
-        if (curl_errno($ch)) {
-            // If there is an error, return a failure response
-            $responseData = ['success' => false, 'error' => 'Error connecting to API'];
-        } else {
-            // Parse the API response
-            $data = json_decode($response, true);
-            
-            // Check if music information is available
-            if (isset($data['music']['title']) && isset($data['music']['author'])) {
-                // Return the song info
-                $responseData = [
-                    'success' => true,
-                    'title' => $data['music']['title'],
-                    'author' => $data['music']['author']
-                ];
-            } else {
-                // If no music information is found, return a failure message
-                $responseData = ['success' => false, 'error' => 'Song information not found.'];
-            }
-        }
-        
-        // Close the cURL session
-        curl_close($ch);
-        
-    } else {
-        // If video ID cannot be extracted, return an error
-        $responseData = ['success' => false, 'error' => 'Invalid TikTok URL.'];
-    }
-} else {
-    // If no link was provided, return an error
-    $responseData = ['success' => false, 'error' => 'No link provided.'];
+// API credentials and URL
+$apiKey = 'ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142';
+$apiHost = 'tiktok-api23.p.rapidapi.com';
+
+// Extract musicId from TikTok URL (you need to provide logic for this or send it from frontend)
+$musicId = ''; // Set this to extract from the TikTok video URL (This part is crucial)
+
+// Check if musicId is available
+if (empty($musicId)) {
+    echo json_encode(["success" => false, "error" => "Music ID not found in the provided link"]);
+    exit;
 }
 
-// Return the response as JSON
-header('Content-Type: application/json');
-echo json_encode($responseData);
+// Setup API endpoint and parameters
+$apiUrl = "https://tiktok-api23.p.rapidapi.com/api/music/info?musicId=$musicId";
+
+// Initialize cURL session
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "x-rapidapi-host: $apiHost",
+    "x-rapidapi-key: $apiKey"
+]);
+
+// Execute cURL and capture the response
+$response = curl_exec($ch);
+curl_close($ch);
+
+// Check for errors
+if ($response === false) {
+    echo json_encode(["success" => false, "error" => "API request failed"]);
+    exit;
+}
+
+// Decode the response from the API
+$responseData = json_decode($response, true);
+
+// Check if the API returned valid data
+if (isset($responseData['data']) && !empty($responseData['data'])) {
+    $musicData = $responseData['data'];
+    $title = $musicData['title'] ?? 'Unknown Title';
+    $author = $musicData['author'] ?? 'Unknown Artist';
+    
+    // Respond with the song info
+    echo json_encode([
+        "success" => true,
+        "title" => $title,
+        "author" => $author
+    ]);
+} else {
+    echo json_encode(["success" => false, "error" => "Song not found."]);
+}
 ?>
-
-
-
-
-
-
-
