@@ -20,7 +20,7 @@ curl_setopt_array($curl, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
         "x-rapidapi-host: tiktok-api23.p.rapidapi.com",
-        "x-rapidapi-key: ee69272e69msh597ad9b0078f353p1589d5jsn69b9e3013142"
+        "x-rapidapi-key: 9ff9df4724mshc46ef2cef6b47e4p17c916jsn6fabfd0216bd"
     ]
 ]);
 
