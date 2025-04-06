@@ -3,17 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Identify songs from TikTok videos instantly with TTMusicID. Paste the link, and we'll find the music." />
-  <meta name="keywords" content="TikTok song finder, identify music, find TikTok music, TT music ID" />
-  <meta name="author" content="TTMusicID">
-  <meta property="og:title" content="TTMusicID - Find Any TikTok Song" />
-  <meta property="og:description" content="Paste a TikTok video link and discover the music instantly." />
-  <meta property="og:image" content="preview.png" />
-  <meta property="og:url" content="https://ttmusicid.com" />
-  <meta name="twitter:card" content="summary_large_image" />
   <title>TTMusicID - Identify TikTok Songs</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -32,13 +22,6 @@
     h1 {
       color: #ff2a68;
     }
-    p.intro {
-      max-width: 600px;
-      margin-top: 10px;
-      text-align: center;
-      font-size: 1.2em;
-      color: #ccc;
-    }
     input, button {
       padding: 10px;
       margin: 10px;
@@ -52,30 +35,21 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
     }
     button:hover {
       background-color: #d21f56;
-      transform: scale(1.05);
     }
     .result {
       margin-top: 20px;
       font-size: 1.2em;
       text-align: center;
     }
-    #cooldown {
-      font-size: 0.95em;
-      color: #ccc;
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
   <header>
     <h1>TTMusicID</h1>
-    <p class="intro">
-      Welcome to TTMusicID! Easily identify the song playing in any TikTok video. Just paste the link, and we'll instantly tell you the music title and artist.
-    </p>
+    <p>Paste a TikTok video link, and we'll identify the music instantly.</p>
   </header>
 
   <form id="linkForm">
@@ -84,67 +58,42 @@
   </form>
 
   <div class="result" id="result">🎵 Song info will appear here</div>
-  <div id="cooldown"></div>
 
   <script>
-    const cooldownKey = 'lastUseTimestamp';
-    const cooldownTime = 3600 * 1000; // 1 hour in ms
-
-    function updateCountdown() {
-      const lastUse = localStorage.getItem(cooldownKey);
-      if (!lastUse) return;
-
-      const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
-      const countdown = document.getElementById('cooldown');
-
-      if (timeLeft > 0) {
-        const minutes = Math.floor(timeLeft / 60000);
-        const seconds = Math.floor((timeLeft % 60000) / 1000);
-        countdown.textContent = `⏳ Try again in ${minutes}m ${seconds}s`;
-        setTimeout(updateCountdown, 1000);
-      } else {
-        countdown.textContent = '';
-      }
+    function extractVideoId(url) {
+      const match = url.match(/(?:https:\/\/www\.tiktok\.com\/[^\/]+\/video\/)(\d+)/);
+      return match ? match[1] : null;
     }
 
     document.getElementById('linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const resultDiv = document.getElementById('result');
-      const lastUse = localStorage.getItem(cooldownKey);
+      const videoUrl = document.getElementById('videoLink').value.trim();
 
-      if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
-        resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
-        updateCountdown();
+      const videoId = extractVideoId(videoUrl);
+      if (!videoId) {
+        resultDiv.textContent = '❌ Invalid TikTok URL.';
         return;
       }
 
-      const link = document.getElementById('videoLink').value.trim();
       resultDiv.textContent = '⏳ Processing...';
 
       try {
-        // Send the TikTok URL as a JSON object to the backend (identify.php)
         const response = await fetch('identify.php', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ link })  // Send the TikTok URL inside a JSON object
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ videoId })
         });
-
         const data = await response.json();
         if (data.success) {
-          resultDiv.innerHTML = `✅ <strong>${data.author}</strong> - ${data.title}`;
-          localStorage.setItem(cooldownKey, Date.now());
-          updateCountdown();
+          resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
         } else {
-          resultDiv.textContent = `❌ Error: ${data.error}`;
+          resultDiv.textContent = '❌ Error identifying the song.';
         }
       } catch (err) {
         resultDiv.textContent = '⚠️ Error identifying the song.';
       }
     });
-
-    updateCountdown();
   </script>
 </body>
 </html>
