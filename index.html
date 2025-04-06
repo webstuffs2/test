@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TTMusicID - Identify TikTok Songs</title>
+  <meta name="description" content="SongsFind — Instantly identify music from TikTok videos. Paste a link, click search, and discover the song." />
+  <meta name="keywords" content="song finder, TikTok music, identify TikTok song, SongsFind, music recognition" />
+  <meta name="author" content="SongsFind" />
+  <meta property="og:title" content="SongsFind - Instantly Identify Songs from Videos" />
+  <meta property="og:description" content="Paste a TikTok link and discover the music instantly. Fast, free, and accurate song recognition." />
+  <meta property="og:image" content="preview.png" />
+  <meta property="og:url" content="https://songsearchers.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>SongsFind - Identify TikTok Songs Instantly</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -21,6 +31,22 @@
     }
     h1 {
       color: #ff2a68;
+      margin-bottom: 0.5em;
+    }
+    p.intro {
+      max-width: 700px;
+      text-align: center;
+      font-size: 1.1em;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+    .features {
+      max-width: 700px;
+      text-align: left;
+      margin-top: 20px;
+      line-height: 1.6em;
+      font-size: 0.95em;
+      color: #bbb;
     }
     input, button {
       padding: 10px;
@@ -35,65 +61,125 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
     }
     button:hover {
       background-color: #d21f56;
+      transform: scale(1.05);
     }
     .result {
       margin-top: 20px;
       font-size: 1.2em;
       text-align: center;
     }
+    #cooldown {
+      font-size: 0.95em;
+      color: #ccc;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>TTMusicID</h1>
-    <p>Paste a TikTok video link, and we'll identify the music instantly.</p>
+    <h1>SongsFind</h1>
+    <p class="intro">
+      🎧 Instantly identify music from TikTok videos. Just paste a link, click "Identify", and get the song. Fast, free, and accurate — no signup needed.
+    </p>
   </header>
 
   <form id="linkForm">
-    <input type="url" id="videoLink" placeholder="Paste TikTok link here..." required />
+    <input type="url" id="videoLink" placeholder="Paste TikTok video link here..." required />
     <button type="submit">Identify Song</button>
   </form>
 
   <div class="result" id="result">🎵 Song info will appear here</div>
+  <div id="cooldown"></div>
+
+  <div class="features">
+    <h3>🔍 How It Works</h3>
+    <ul>
+      <li>Paste the video link from TikTok</li>
+      <li>Click “Identify” — our tool analyzes the video</li>
+      <li>Get instant results — song title, artist, and more</li>
+    </ul>
+
+    <h3>🚀 Why SongsFind?</h3>
+    <ul>
+      <li>✅ Works with TikTok (more coming soon!)</li>
+      <li>✅ Fast, clean results — no fluff</li>
+      <li>✅ Designed for music lovers and creators</li>
+      <li>✅ 100% Free to use</li>
+    </ul>
+
+    <h3>💡 What You Can Do</h3>
+    <ul>
+      <li>🎶 Identify that TikTok tune stuck in your head</li>
+      <li>🎤 Discover hidden artists and viral tracks</li>
+      <li>📱 Build playlists from trending videos</li>
+      <li>💡 Be the friend who always knows the song</li>
+    </ul>
+
+    <h3>📈 Built for the Music Discovery Era</h3>
+    <p>Every week, millions hear new songs in short-form videos. <strong>SongsFind</strong> helps you bridge the gap between sound and source.</p>
+
+    <p><strong>SongsFind — Because no good beat should go unidentified.</strong></p>
+  </div>
 
   <script>
-    function extractVideoId(url) {
-      const match = url.match(/(?:https:\/\/www\.tiktok\.com\/[^\/]+\/video\/)(\d+)/);
-      return match ? match[1] : null;
+    const cooldownKey = 'lastUseTimestamp';
+    const cooldownTime = 3600 * 1000; // 1 hour in ms
+
+    function updateCountdown() {
+      const lastUse = localStorage.getItem(cooldownKey);
+      if (!lastUse) return;
+
+      const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
+      const countdown = document.getElementById('cooldown');
+
+      if (timeLeft > 0) {
+        const minutes = Math.floor(timeLeft / 60000);
+        const seconds = Math.floor((timeLeft % 60000) / 1000);
+        countdown.textContent = `⏳ Try again in ${minutes}m ${seconds}s`;
+        setTimeout(updateCountdown, 1000);
+      } else {
+        countdown.textContent = '';
+      }
     }
 
     document.getElementById('linkForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const resultDiv = document.getElementById('result');
-      const videoUrl = document.getElementById('videoLink').value.trim();
+      const lastUse = localStorage.getItem(cooldownKey);
 
-      const videoId = extractVideoId(videoUrl);
-      if (!videoId) {
-        resultDiv.textContent = '❌ Invalid TikTok URL.';
+      if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
+        resultDiv.textContent = '🚫 Limit reached. Come back in an hour.';
+        updateCountdown();
         return;
       }
 
+      const link = document.getElementById('videoLink').value.trim();
       resultDiv.textContent = '⏳ Processing...';
 
       try {
         const response = await fetch('identify.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ videoId })
+          body: JSON.stringify({ link })
         });
         const data = await response.json();
         if (data.success) {
-          resultDiv.innerHTML = `✅ <strong>${data.artist}</strong> - ${data.title}`;
+          resultDiv.innerHTML = `✅ <strong>${data.author}</strong> - ${data.title}`;
+          localStorage.setItem(cooldownKey, Date.now());
+          updateCountdown();
         } else {
-          resultDiv.textContent = '❌ Error identifying the song.';
+          resultDiv.textContent = `❌ Error: ${data.error}`;
         }
       } catch (err) {
         resultDiv.textContent = '⚠️ Error identifying the song.';
       }
     });
+
+    updateCountdown();
   </script>
 </body>
 </html>
