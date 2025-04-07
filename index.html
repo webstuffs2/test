@@ -3,236 +3,151 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Identify songs from TikTok videos instantly with SongSearchers. Paste the link and discover the music behind the video." />
-  <meta name="keywords" content="find TikTok song, identify music from video, TikTok music finder, song identifier" />
-  <meta name="author" content="SongSearchers" />
-  <meta property="og:title" content="SongSearchers - Discover Music from TikTok" />
-  <meta property="og:description" content="Paste a TikTok video link and find the song instantly." />
-  <meta property="og:image" content="preview.png" />
-  <meta property="og:url" content="https://songsearchers.com" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <title>SongSearchers - Find TikTok Songs</title>
-  <link rel="icon" href="favicon.png" />
+  <title>Burnout Risk Calculator</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 30px 15px;
+      background: #f4f4f4;
+      color: #333;
     }
-
-    h1 {
-      font-size: 2.8rem;
-      color: #ff2a68;
-      animation: bounce 1.5s infinite ease-in-out;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .intro {
-      max-width: 600px;
-      font-size: 1.15rem;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
-
-    .form-wrapper {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 4px 20px rgba(255, 42, 104, 0.2);
-      max-width: 500px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    input, button {
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-      font-size: 1em;
-      width: 100%;
-    }
-
-    /* Fix for the text box width */
-    input {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      width: calc(100% - 24px); /* Set width equal to the button with a small margin on either side */
-      margin-left: 12px; /* Add padding between the edges and the input */
-      margin-right: 12px;
-    }
-
-    button {
-      background-color: #ff2a68;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-
-    button:hover {
-      background-color: #d21f56;
-      transform: scale(1.03);
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #fff;
-    }
-
-    #cooldown {
-      font-size: 0.95em;
-      color: #ccc;
-      margin-top: 10px;
-    }
-
-    .seo-content {
-      margin-top: 50px;
+    .container {
       max-width: 700px;
-      font-size: 1em;
-      color: #bbb;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    .seo-content h2 {
-      color: #ff2a68;
-      font-size: 1.4rem;
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
       margin-bottom: 10px;
     }
-
-    .ezoic-ad {
-      margin: 40px 0;
+    select {
       width: 100%;
-      max-width: 700px;
-      min-height: 90px;
-      background-color: #222;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #555;
-      font-size: 0.9rem;
-      padding: 20px; /* Added padding here to move ads further out */
+      padding: 10px;
+      font-size: 16px;
     }
-
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #3498db;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #ecf0f1;
+      border-left: 6px solid #3498db;
+    }
     footer {
-      margin-top: 60px;
-      font-size: 0.9em;
-      color: #666;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <h1>SongSearchers</h1>
-  <p class="intro">Paste a TikTok video link below and discover the song behind it. Fast. Free. Accurate.</p>
-
-  <!-- Ezoic Placeholder 1 -->
-  <div class="ezoic-ad">[Ad Placeholder 1]</div>
-
-  <div class="form-wrapper">
-    <form id="linkForm">
-      <input type="url" id="videoLink" placeholder="Paste TikTok video link here..." required />
-      <button type="submit">Identify Song</button>
+  <div class="container">
+    <h1>Burnout Risk Calculator</h1>
+    <form id="quizForm">
+      <div id="questions"></div>
+      <button type="submit">Check My Burnout Risk</button>
     </form>
-    <div class="result" id="result">🎵 Song info will appear here</div>
-    <div id="cooldown"></div>
+    <div id="result" class="result" style="display:none;"></div>
   </div>
 
-  <!-- Ezoic Placeholder 2 -->
-  <div class="ezoic-ad">[Ad Placeholder 2]</div>
-
-  <div class="seo-content">
-    <h2>Instant Song Discovery from TikTok</h2>
-    <p>Trying to figure out what song is playing in that viral TikTok clip? SongSearchers makes it easy. Just paste the link and we’ll do the rest.</p>
-    <p>Whether you're building playlists, curating reels, or simply satisfying your curiosity, we've got you covered.</p>
-    <ul style="text-align: left; list-style: disc; padding-left: 20px;">
-      <li>🎧 Works with TikTok video links</li>
-      <li>⚡ Fast, accurate song recognition</li>
-      <li>📱 No signups required</li>
-      <li>🎵 Built for music lovers and creators</li>
-    </ul>
-    <p>Discover hidden tracks, support emerging artists, and never miss a beat again.</p>
-  </div>
-
-  <!-- Ezoic Placeholder 3 -->
-  <div class="ezoic-ad">[Ad Placeholder 3]</div>
-
-  <footer>
-    © 2025 SongSearchers. All rights reserved.
-  </footer>
+  <footer>Made with ❤️ to help you stress less.</footer>
 
   <script>
-    window.onload = () => {
-      document.getElementById('videoLink').focus();
-    };
+    const questions = [
+      "How often do you feel emotionally drained from your work?",
+      "How often do you feel like you can't recover from stress, even after time off?",
+      "How motivated do you feel when starting your workday?",
+      "Do you find it hard to concentrate or stay focused during tasks?",
+      "How often do you feel detached or cynical about your job?",
+      "How often do you get quality sleep on workdays?",
+      "How supported do you feel by your colleagues or manager?",
+      "Do you feel like your work aligns with your personal values or goals?",
+      "How frequently do you take real breaks (without checking messages)?",
+      "How often do you feel a sense of accomplishment at work?"
+    ];
 
-    const cooldownKey = 'lastUseTimestamp';
-    const cooldownTime = 3600 * 1000; // 1 hour
+    const reverseScoreQuestions = [2, 5, 6, 7, 8, 9];
 
-    function updateCountdown() {
-      const lastUse = localStorage.getItem(cooldownKey);
-      if (!lastUse) return;
+    const options = [
+      { label: "Never", value: 1 },
+      { label: "Rarely", value: 2 },
+      { label: "Sometimes", value: 3 },
+      { label: "Often", value: 4 },
+      { label: "Always", value: 5 },
+    ];
 
-      const timeLeft = cooldownTime - (Date.now() - parseInt(lastUse));
-      const countdown = document.getElementById('cooldown');
-
-      if (timeLeft > 0) {
-        const minutes = Math.floor(timeLeft / 60000);
-        const seconds = Math.floor((timeLeft % 60000) / 1000);
-        countdown.textContent = `⏳ Try again in ${minutes}m ${seconds}s`;
-        setTimeout(updateCountdown, 1000);
-      } else {
-        countdown.textContent = '';
-      }
-    }
-
-    document.getElementById('linkForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const resultDiv = document.getElementById('result');
-      const lastUse = localStorage.getItem(cooldownKey);
-
-      if (lastUse && Date.now() - parseInt(lastUse) < cooldownTime) {
-        resultDiv.textContent = '🚫 Limit reached. Try again later.';
-        updateCountdown();
-        return;
-      }
-
-      const link = document.getElementById('videoLink').value.trim();
-      resultDiv.textContent = '⏳ Processing...';
-
-      try {
-        const response = await fetch('identify.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ link })
-        });
-        const data = await response.json();
-        if (data.success) {
-          resultDiv.innerHTML = `✅ <strong>${data.author}</strong> - ${data.title}`;
-          localStorage.setItem(cooldownKey, Date.now());
-          updateCountdown();
-        } else {
-          resultDiv.textContent = `❌ Error: ${data.error}`;
-        }
-      } catch (err) {
-        resultDiv.textContent = '⚠️ Error identifying the song.';
-      }
+    const questionsDiv = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("question");
+      wrapper.innerHTML = `<label for="q${i}">${i + 1}. ${q}</label>`;
+      const select = document.createElement("select");
+      select.name = `q${i}`;
+      select.required = true;
+      options.forEach(opt => {
+        const op = document.createElement("option");
+        op.value = opt.value;
+        op.textContent = opt.label;
+        select.appendChild(op);
+      });
+      wrapper.appendChild(select);
+      questionsDiv.appendChild(wrapper);
     });
 
-    updateCountdown();
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const val = parseInt(formData.get(`q${i}`));
+        if (reverseScoreQuestions.includes(i)) {
+          score += 6 - val;
+        } else {
+          score += val;
+        }
+      }
+
+      let level = "", message = "";
+      if (score <= 20) {
+        level = "Low Risk";
+        message = "You’re in a good place. Keep maintaining healthy habits and boundaries.";
+      } else if (score <= 30) {
+        level = "Moderate Risk";
+        message = "You’re holding it together, but be mindful of creeping stress. Small changes can help.";
+      } else if (score <= 40) {
+        level = "High Risk";
+        message = "You're showing signs of burnout. It’s time to set boundaries and recharge.";
+      } else {
+        level = "Critical Burnout";
+        message = "You're likely experiencing serious burnout. Don’t ignore it — you may need to make bigger changes or seek support.";
+      }
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `<h2>${level}</h2><p>${message}</p>`;
+      resultDiv.style.display = "block";
+    });
   </script>
 </body>
 </html>
